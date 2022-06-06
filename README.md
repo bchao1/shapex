@@ -12,7 +12,7 @@ shapex is a 3D shape descriptor library.
     - [BiHDM](https://link.springer.com/article/10.1007/s00371-015-1071-5) 
     - [R-BiHDM](https://link.springer.com/article/10.1007/s00371-015-1071-5) 
 - Local Descriptors
-    - [Global Point Signature](https://www.cs.jhu.edu/~misha/Fall07/Papers/Rustamov07.pdf)
+    - [Global Point Signature (GPS)](https://www.cs.jhu.edu/~misha/Fall07/Papers/Rustamov07.pdf)
     - [Heat Kernel Signature (HKS)](http://www.lix.polytechnique.fr/~maks/papers/hks.pdf)
     - [Scale-invariant Heat Kernel Signature (SI-HKS)](https://ieeexplore.ieee.org/document/5539838)
     - [Wave Kernel Signature (WKS)](https://imagine.enpc.fr/~aubrym/projects/wks/texts/2011-wave-kernel-signature.pdf)
