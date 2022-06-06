@@ -1,7 +1,9 @@
 import trimesh as tm
 import lapy as lp
 from lapy import ShapeDNA as lp_ShapeDNA
+import potpourri3d as pp3d
 import numpy as np 
+from tqdm import tqdm
 
 def ShapeDNA(mesh, n_eigs, lump=False, aniso=False, aniso_smooth=10, ignore_first=False):
     # scale shape by a, eigen value scale by 1/a2)
@@ -75,8 +77,25 @@ def SGWS(mesh, t):
     pass
 
 # Geodesics-based descriptors
-def GDM(mesh):
-    pass
+def GDM(mesh, mode="svd", dim=50):
+    solver = pp3d.MeshHeatMethodDistanceSolver(mesh.vertices, mesh.faces)
+    num_vertices = mesh.vertices.shape[0]
+    gdm_matrix = np.zeros((num_vertices, num_vertices))
+    print("Computing geodesic distance matrix ...")
+    for i, v in enumerate(tqdm(range(num_vertices))):
+        dist = solver.compute_distance(v)
+        gdm_matrix[v] = dist
+    # approximations in in geodesic computation leads to non-symmetric geodesic distance matrices.
+    # take the average of upper and lower triangle
+    gdm_matrix = (gdm_matrix + gdm_matrix.T) * 0.5 
+    if mode == "svd":
+        print("Computing singular values ...")
+        _, desc, _ = np.linalg.svd(gdm_matrix, hermitian=True)
+    elif mode == "eig":
+        print("Computing Eigenvalues ...")
+        # eigenvalue decomposition for symmetric matrix
+        desc, _ = np.linalg.eigh(gdm_matrix)
+    return desc[:dim]
 
 def R_BiHDM(mesh):
     pass

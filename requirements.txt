@@ -1,1 +1,4 @@
 trimesh
+lapy 
+potpourri3d
+tqdm
