@@ -1,6 +1,10 @@
 # shapex
 shapex is a 3D shape descriptor library.
 
+<p align="center">
+    <img src="images/teaser.png">
+<p>
+
 ## Features
 - A collection of classical shape descriptors
 - Visualization of shape descriptor (signataure) functions

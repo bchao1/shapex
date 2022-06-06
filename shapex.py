@@ -17,8 +17,8 @@ def ShapeDNA(mesh, n_eigs, lump=False, aniso=False, aniso_smooth=10, ignore_firs
         eig_val = eig_val[1:]
         eig_vec = eig_vec[:, 1:]
     # normalize?
-    eig_vec_norm = np.linalg.norm(eig_vec, axis=0)
-    eig_vec /= eig_vec_norm # normalize eigenvectors to unit norm?
+    #eig_vec_norm = np.linalg.norm(eig_vec, axis=0)
+    #eig_vec /= eig_vec_norm # normalize eigenvectors to unit norm?
     return eig_val, eig_vec
 
 def HKS(mesh, n_eigs=300, M=100, t=None, normalize=False):

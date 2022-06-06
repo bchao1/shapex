@@ -10,9 +10,12 @@ from tqdm import tqdm
 
 if __name__ == "__main__":
     mesh = trimesh.load("data/homer.obj")
-    print(mesh.is_watertight)
-
-    desc = shapex.GDM(mesh, mode="eig")
-    print(desc.shape)
+    _, ev = shapex.ShapeDNA(mesh, 100)
+    mesh_list = []
+    for i in range(10):
+        colored_mesh = utils.colorize_mesh(deepcopy(mesh), ev[:, i])
+        colored_mesh.apply_translation([0, 0, -0.5*i])
+        mesh_list.append(colored_mesh)
+    trimesh.Scene(mesh_list).show()
         
     
