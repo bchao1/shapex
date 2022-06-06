@@ -1,4 +1,5 @@
 # shapex
+shapex is a 3D shape descriptor library.
 
 ## Features
 - A collection of classical shape descriptors
