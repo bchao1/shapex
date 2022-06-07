@@ -118,7 +118,7 @@ def R_BiHDM(mesh, M=100, L=30, load_K=None, save_K=None):
         for i in tqdm(range(1, M + 1)):
             a = ((eig_vec[:, i][:, None] @ eigs[None, :]) * D).sum()
             a_list.append(a)
-        a_list = np.sqrt(A) * np.array(a)
+        a_list = np.sqrt(A) * np.array(a_list)
         K[0, 1:] = a_list
         K[1:, 0] = a_list
         if save_K is not None:
