@@ -12,9 +12,8 @@ shapex is a 3D shape descriptor library.
 ## Shape Descriptors
 - Global Descriptors
     - [ShapeDNA](https://www.sciencedirect.com/science/article/abs/pii/S0010448505001867) 
-    - [GDM](https://link.springer.com/chapter/10.1007/978-3-642-03767-2_92)
-    - [BiHDM](https://link.springer.com/article/10.1007/s00371-015-1071-5) 
-    - [R-BiHDM](https://link.springer.com/article/10.1007/s00371-015-1071-5) 
+    - [Geodesic Distance Matrix (GDM)](https://link.springer.com/chapter/10.1007/978-3-642-03767-2_92)
+    - [Reduced Biharmonic Distance Matrix (R-BiHDM)](https://link.springer.com/article/10.1007/s00371-015-1071-5) 
 - Local Descriptors
     - [Global Point Signature (GPS)](https://www.cs.jhu.edu/~misha/Fall07/Papers/Rustamov07.pdf)
     - [Heat Kernel Signature (HKS)](http://www.lix.polytechnique.fr/~maks/papers/hks.pdf)

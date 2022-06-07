@@ -5,7 +5,8 @@ import potpourri3d as pp3d
 import numpy as np 
 from tqdm import tqdm
 
-def ShapeDNA(mesh, n_eigs, lump=False, aniso=False, aniso_smooth=10, ignore_first=False):
+# first k or all eigenvalues?
+def ShapeDNA(mesh, n_eigs, lump=False, aniso=False, aniso_smooth=10, ignore_first=False, return_dict=False):
     # scale shape by a, eigen value scale by 1/a2)
     lp_mesh = lp.TriaMesh(mesh.vertices, mesh.faces)
     if ignore_first:
@@ -17,9 +18,12 @@ def ShapeDNA(mesh, n_eigs, lump=False, aniso=False, aniso_smooth=10, ignore_firs
         eig_val = eig_val[1:]
         eig_vec = eig_vec[:, 1:]
     # normalize?
-    #eig_vec_norm = np.linalg.norm(eig_vec, axis=0)
-    #eig_vec /= eig_vec_norm # normalize eigenvectors to unit norm?
-    return eig_val, eig_vec
+    eig_vec_norm = np.linalg.norm(eig_vec, axis=0)
+    eig_vec /= eig_vec_norm # normalize eigenvectors to unit norm?
+    if return_dict:
+        return eig_val, eig_vec, res
+    else:
+        return eig_val, eig_vec
 
 def HKS(mesh, n_eigs=300, M=100, t=None, normalize=False):
     eig_val, eig_vec = ShapeDNA(mesh, n_eigs)
@@ -97,10 +101,31 @@ def GDM(mesh, mode="svd", dim=50):
         desc, _ = np.linalg.eigh(gdm_matrix)
     return desc[:dim]
 
-def R_BiHDM(mesh):
-    pass
+def R_BiHDM(mesh, M=100, L=30, load_K=None, save_K=None):
+    assert M > max(2 * L, 60)
 
-def BiHDM(mesh):
-    pass
+    if load_K is None:
+        A = mesh.area
+        eig_val, eig_vec, ev_dict = ShapeDNA(mesh, M + 1, return_dict=True)
+        D = ev_dict["mass"] # mass matrix
 
+        K = np.zeros((M + 1, M + 1)) # projection matrix
+        K[0, 0] = (2 / eig_val[1:]**2).sum()
+        K[np.arange(1, M+1), np.arange(1, M+1)] = -2 / (eig_val[1:]**2)
+
+        eigs = ((eig_vec[:, 1:] / eig_val[None, 1:])**2).sum(axis=-1)
+        a_list = []
+        for i in tqdm(range(1, M + 1)):
+            a = ((eig_vec[:, i][:, None] @ eigs[None, :]) * D).sum()
+            a_list.append(a)
+        a_list = np.sqrt(A) * np.array(a)
+        K[0, 1:] = a_list
+        K[1:, 0] = a_list
+        if save_K is not None:
+            np.save(save_K, K)
+    else:
+        K = np.load(load_K)
+    k_eig, _ = np.linalg.eigh(K)
+    k_eig = -(k_eig / k_eig[-1])[:L]
+    return k_eig
 # Mesh filtering
